@@ -27,7 +27,7 @@ def get_model(model_path):
 	return pickle.load(open(model_path, 'rb'))
 
 def load_images(filename):
-	'''
+    '''
     reads pickle files
     return: [[image, label]]
     '''
@@ -105,21 +105,6 @@ if st.checkbox('Run SVM', value=False):
 	st.balloons()
 
 	st.checkbox('Test completed', value=True)
-
-	if st.button('Confusion matrix'):
-		titles_options = [("Confusion matrix, without normalization", None),
-                  ("Normalized confusion matrix", 'true')]
-		for title, normalize in titles_options:
-			disp = plot_confusion_matrix(model, test_X, test_y,
-			                             display_labels=original_label,
-			                             cmap=pyplot.cm.Blues,
-			                             normalize=normalize)
-			disp.ax_.set_title(title)
-
-			print(title)
-			print(disp.confusion_matrix)
-
-			pyplot.show()
 
 	if st.button('Show results'):
 		st.image(show_img,caption,width=100)
