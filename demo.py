@@ -5,10 +5,11 @@ import streamlit as st
 import pickle
 import h5py
 import sklearn
-from sklearn.metrics import plot_confusion_matrix
+from sklearn.metrics import confusion_matrix, accuracy_score
 from matplotlib import pyplot
 import cv2
 import time
+import seaborn as sns
 
 
 #### filenames and paths: changeable
@@ -27,7 +28,7 @@ def get_model(model_path):
 	return pickle.load(open(model_path, 'rb'))
 
 def load_images(filename):
-    '''
+	'''
     reads pickle files
     return: [[image, label]]
     '''
@@ -99,15 +100,24 @@ count = 0
 if st.checkbox('Run SVM', value=False):
 	for ft,lbl,img, img_name in zip(test_X, test_y,test_images, matfile['file_names']):
 		p, row = classify(ft, lbl, img, img_name, model)
+		pred.append(p)
 
 	time.sleep(2)
 
-	st.balloons()
+	#st.balloons()
 
 	st.checkbox('Test completed', value=True)
 
-	if st.button('Show results'):
+	if st.button('Results'):
+		st.write(accuracy_score(test_y, pred))	
+
+		st.write('Confusion matrix')
+		st.write(confusion_matrix(test_y, pred, normalize='true' ))
+
+
+	if st.button('Show classified images'):
 		st.image(show_img,caption,width=100)
+		#these are the images saved during the classification!!
 
 	
 
